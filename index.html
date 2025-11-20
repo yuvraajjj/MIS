@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { 
+import React, { useState } from "react";
+import {
   Home,
   Star,
   Bell,
@@ -28,207 +28,559 @@ import {
   ThumbsDown,
   Download,
   File,
-  AlertTriangle
-} from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
+  AlertTriangle,
+} from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
   ResponsiveContainer,
   LineChart,
   Line,
   AreaChart,
-  Area
-} from 'recharts';
+  Area,
+} from "recharts";
 
 // --- Mock Data (Online Education Context) ---
 
 const enrollmentData = [
-  { 
-    id: 'MBA25019', 
-    name: 'HARIOM KASHYAP', 
-    course: 'Management Information Systems', 
-    date: '2025-09-01', 
-    status: 'Active', 
-    progress: 35, 
+  {
+    id: "MBA25019",
+    name: "HARIOM KASHYAP",
+    course: "Management Information Systems",
+    date: "2025-09-01",
+    status: "Active",
+    progress: 35,
     risk: true,
-    image: 'https://i.ibb.co/Q3kK75RR/1751018677359.jpg' 
+    image: "https://i.ibb.co/Q3kK75RR/1751018677359.jpg",
   },
-  { id: 'MBA25037', name: 'RONALD DEBBARMA', course: 'Organisational Design', date: '2025-09-02', status: 'Pending', progress: 0 },
-  { id: 'MBA25026', name: 'MD AQUIB RAZA', course: 'Corporate Finance', date: '2025-09-05', status: 'Active', progress: 62 },
-  { id: 'MBA25017', name: 'GAIKWAD KARTIK VIJAY', course: 'Macroeconomics', date: '2025-09-06', status: 'Active', progress: 78 },
-  { 
-    id: 'MBA25044', 
-    name: 'SHANE H MENDON', 
-    course: 'Critical Thinking', 
-    date: '2025-09-08', 
-    status: 'Dropped', 
-    progress: 12, 
-    reason: 'Curriculum Mismatch',
-    image: 'https://i.ibb.co/XfBfMXnF/1751298204448.jpg'
+  {
+    id: "MBA25037",
+    name: "RONALD DEBBARMA",
+    course: "Organisational Design",
+    date: "2025-09-02",
+    status: "Pending",
+    progress: 0,
   },
-  { id: 'MBA25041', name: 'SAURAV DAS', course: 'Decision Modeling', date: '2025-09-10', status: 'Active', progress: 45 },
-  { id: 'MBA25035', name: 'RASHMI DHURWEY', course: 'Management Information Systems', date: '2025-09-11', status: 'Active', progress: 88 },
-  { id: 'MBA25020', name: 'HARSH TONGIA', course: 'Organisational Design', date: '2025-09-12', status: 'Pending', progress: 0 },
-  { id: 'MBA25061', name: 'VIHANA BHARGAVA', course: 'Corporate Finance', date: '2025-09-15', status: 'Active', progress: 70 },
-  { id: 'MBA25024', name: 'KARAN KUMAR', course: 'Macroeconomics', date: '2025-09-16', status: 'Active', progress: 92 },
+  {
+    id: "MBA25026",
+    name: "MD AQUIB RAZA",
+    course: "Corporate Finance",
+    date: "2025-09-05",
+    status: "Active",
+    progress: 62,
+  },
+  {
+    id: "MBA25017",
+    name: "GAIKWAD KARTIK VIJAY",
+    course: "Macroeconomics",
+    date: "2025-09-06",
+    status: "Active",
+    progress: 78,
+  },
+  {
+    id: "MBA25044",
+    name: "SHANE H MENDON",
+    course: "Critical Thinking",
+    date: "2025-09-08",
+    status: "Dropped",
+    progress: 12,
+    reason: "Curriculum Mismatch",
+    image: "https://i.ibb.co/XfBfMXnF/1751298204448.jpg",
+  },
+  {
+    id: "MBA25041",
+    name: "SAURAV DAS",
+    course: "Decision Modeling",
+    date: "2025-09-10",
+    status: "Active",
+    progress: 45,
+  },
+  {
+    id: "MBA25035",
+    name: "RASHMI DHURWEY",
+    course: "Management Information Systems",
+    date: "2025-09-11",
+    status: "Active",
+    progress: 88,
+  },
+  {
+    id: "MBA25020",
+    name: "HARSH TONGIA",
+    course: "Organisational Design",
+    date: "2025-09-12",
+    status: "Pending",
+    progress: 0,
+  },
+  {
+    id: "MBA25061",
+    name: "VIHANA BHARGAVA",
+    course: "Corporate Finance",
+    date: "2025-09-15",
+    status: "Active",
+    progress: 70,
+  },
+  {
+    id: "MBA25024",
+    name: "KARAN KUMAR",
+    course: "Macroeconomics",
+    date: "2025-09-16",
+    status: "Active",
+    progress: 92,
+  },
 ];
 
 const courseData = [
-  { name: 'Management Information Systems', code: 'MIS-2025', faculty: 'Prof. Venkatesh', students: 120, status: 'Live', completion: 78 },
-  { name: 'Organisational Design', code: 'ORG-2025', faculty: 'Prof. Devjani', students: 95, status: 'Live', completion: 65 },
-  { name: 'Corporate Finance', code: 'FIN-2025', faculty: 'N/A', students: 105, status: 'Upcoming', completion: 0 },
-  { name: 'Macroeconomics', code: 'ECO-2025', faculty: 'Prof. Jagdish Prasad', students: 110, status: 'Live', completion: 82 },
-  { name: 'Critical Thinking', code: 'CRT-2025', faculty: 'Prof. Jenna', students: 85, status: 'Live', completion: 90 },
-  { name: 'Decision Modeling', code: 'DEC-2025', faculty: 'Prof. Vivek Roy', students: 105, status: 'Live', completion: 55 },
+  {
+    name: "Management Information Systems",
+    code: "MIS-2025",
+    faculty: "Prof. Venkatesh",
+    students: 120,
+    status: "Live",
+    completion: 78,
+  },
+  {
+    name: "Organisational Design",
+    code: "ORG-2025",
+    faculty: "Prof. Devjani",
+    students: 95,
+    status: "Live",
+    completion: 65,
+  },
+  {
+    name: "Corporate Finance",
+    code: "FIN-2025",
+    faculty: "N/A",
+    students: 105,
+    status: "Upcoming",
+    completion: 0,
+  },
+  {
+    name: "Macroeconomics",
+    code: "ECO-2025",
+    faculty: "Prof. Jagdish Prasad",
+    students: 110,
+    status: "Live",
+    completion: 82,
+  },
+  {
+    name: "Critical Thinking",
+    code: "CRT-2025",
+    faculty: "Prof. Jenna",
+    students: 85,
+    status: "Live",
+    completion: 90,
+  },
+  {
+    name: "Decision Modeling",
+    code: "DEC-2025",
+    faculty: "Prof. Vivek Roy",
+    students: 105,
+    status: "Live",
+    completion: 55,
+  },
 ];
 
 const facultyData = [
-  { id: 1, name: 'Prof. Venkatesh', dept: 'MIS', satisfaction: 4.9, engagement: 'High', avgScore: 88 },
-  { id: 2, name: 'Prof. Devjani', dept: 'Org Design', satisfaction: 4.7, engagement: 'Medium', avgScore: 82 },
-  { id: 3, name: 'Prof. Jagdish Prasad', dept: 'Macroeconomics', satisfaction: 4.8, engagement: 'High', avgScore: 85 },
-  { id: 4, name: 'Prof. Jenna', dept: 'Crit. Thinking', satisfaction: 4.9, engagement: 'Very High', avgScore: 92 },
-  { id: 5, name: 'Prof. Vivek Roy', dept: 'Dec. Modeling', satisfaction: 4.5, engagement: 'Medium', avgScore: 76 },
+  {
+    id: 1,
+    name: "Prof. Venkatesh",
+    dept: "MIS",
+    satisfaction: 4.9,
+    engagement: "High",
+    avgScore: 88,
+  },
+  {
+    id: 2,
+    name: "Prof. Devjani",
+    dept: "Org Design",
+    satisfaction: 4.7,
+    engagement: "Medium",
+    avgScore: 82,
+  },
+  {
+    id: 3,
+    name: "Prof. Jagdish Prasad",
+    dept: "Macroeconomics",
+    satisfaction: 4.8,
+    engagement: "High",
+    avgScore: 85,
+  },
+  {
+    id: 4,
+    name: "Prof. Jenna",
+    dept: "Crit. Thinking",
+    satisfaction: 4.9,
+    engagement: "Very High",
+    avgScore: 92,
+  },
+  {
+    id: 5,
+    name: "Prof. Vivek Roy",
+    dept: "Dec. Modeling",
+    satisfaction: 4.5,
+    engagement: "Medium",
+    avgScore: 76,
+  },
 ];
 
 const engagementMetrics = [
-  { label: 'Active Learners (Daily)', value: '184', subtext: '85% of enrolled' },
-  { label: 'Video Completion Rate', value: '76%', comparison: [60, 76], color: '#10B981' },
-  { label: 'Avg Session Duration', value: '42m', comparison: [30, 42], color: '#10B981' },
-  { label: 'Inactive Users (>7 days)', value: '12', comparison: [20, 12], color: '#F59E0B' },
+  {
+    label: "Active Learners (Daily)",
+    value: "184",
+    subtext: "85% of enrolled",
+  },
+  {
+    label: "Video Completion Rate",
+    value: "76%",
+    comparison: [60, 76],
+    color: "#10B981",
+  },
+  {
+    label: "Avg Session Duration",
+    value: "42m",
+    comparison: [30, 42],
+    color: "#10B981",
+  },
+  {
+    label: "Inactive Users (>7 days)",
+    value: "12",
+    comparison: [20, 12],
+    color: "#F59E0B",
+  },
 ];
 
 const riskMetrics = [
-  { label: 'Missed Deadlines', value: '15', comparison: [25, 15], subtext: 'This week' },
-  { label: 'Plagiarism Alerts', value: '2', comparison: [5, 2], subtext: 'Flagged by AI' },
-  { label: 'At-Risk of Drop-off', value: '8', comparison: [10, 8], subtext: 'Low engagement' },
-  { label: 'Tech Support Tickets', value: '5', subtext: 'Open' },
+  {
+    label: "Missed Deadlines",
+    value: "15",
+    comparison: [25, 15],
+    subtext: "This week",
+  },
+  {
+    label: "Plagiarism Alerts",
+    value: "2",
+    comparison: [5, 2],
+    subtext: "Flagged by AI",
+  },
+  {
+    label: "At-Risk of Drop-off",
+    value: "8",
+    comparison: [10, 8],
+    subtext: "Low engagement",
+  },
+  { label: "Tech Support Tickets", value: "5", subtext: "Open" },
 ];
 
 const outcomeMetrics = [
-  { label: 'Avg Quiz Score', value: '82%', comparison: [100, 82], color: '#3B82F6' },
-  { label: 'Certifications Issued', value: '45', comparison: [100, 45], color: '#10B981' },
-  { label: 'Skill Badges Earned', value: '120', comparison: [150, 120], color: '#8B5CF6' },
+  {
+    label: "Avg Quiz Score",
+    value: "82%",
+    comparison: [100, 82],
+    color: "#3B82F6",
+  },
+  {
+    label: "Certifications Issued",
+    value: "45",
+    comparison: [100, 45],
+    color: "#10B981",
+  },
+  {
+    label: "Skill Badges Earned",
+    value: "120",
+    comparison: [150, 120],
+    color: "#8B5CF6",
+  },
 ];
 
 const correlationData = [
-  { week: 'W1', videoWatchTime: 20, avgScore: 65 },
-  { week: 'W2', videoWatchTime: 35, avgScore: 70 },
-  { week: 'W3', videoWatchTime: 45, avgScore: 75 },
-  { week: 'W4', videoWatchTime: 60, avgScore: 82 },
-  { week: 'W5', videoWatchTime: 75, avgScore: 88 },
-  { week: 'W6', videoWatchTime: 90, avgScore: 92 },
+  { week: "W1", videoWatchTime: 20, avgScore: 65 },
+  { week: "W2", videoWatchTime: 35, avgScore: 70 },
+  { week: "W3", videoWatchTime: 45, avgScore: 75 },
+  { week: "W4", videoWatchTime: 60, avgScore: 82 },
+  { week: "W5", videoWatchTime: 75, avgScore: 88 },
+  { week: "W6", videoWatchTime: 90, avgScore: 92 },
 ];
 
 const attendanceTrend = [
-  { day: 'Mon', count: 195 },
-  { day: 'Tue', count: 188 },
-  { day: 'Wed', count: 204 },
-  { day: 'Thu', count: 176 },
-  { day: 'Fri', count: 160 },
-  { day: 'Sat', count: 120 },
-  { day: 'Sun', count: 95 },
+  { day: "Mon", count: 195 },
+  { day: "Tue", count: 188 },
+  { day: "Wed", count: 204 },
+  { day: "Thu", count: 176 },
+  { day: "Fri", count: 160 },
+  { day: "Sat", count: 120 },
+  { day: "Sun", count: 95 },
 ];
 
 const grievanceData = [
-  { id: 'G-101', student: 'Saurav Das', issue: 'Access denied to Module 4', date: '2025-09-22', status: 'Open', severity: 'High' },
-  { id: 'G-102', student: 'Vihana Bhargava', issue: 'Grade discrepancy in Quiz 2', date: '2025-09-21', status: 'Resolved', severity: 'Medium' },
-  { id: 'G-103', student: 'Tushar Verma', issue: 'Video playback lagging', date: '2025-09-20', status: 'Pending', severity: 'Low' },
+  {
+    id: "G-101",
+    student: "Saurav Das",
+    issue: "Access denied to Module 4",
+    date: "2025-09-22",
+    status: "Open",
+    severity: "High",
+  },
+  {
+    id: "G-102",
+    student: "Vihana Bhargava",
+    issue: "Grade discrepancy in Quiz 2",
+    date: "2025-09-21",
+    status: "Resolved",
+    severity: "Medium",
+  },
+  {
+    id: "G-103",
+    student: "Tushar Verma",
+    issue: "Video playback lagging",
+    date: "2025-09-20",
+    status: "Pending",
+    severity: "Low",
+  },
 ];
 
 const resourcesData = [
-  { title: 'HBR Case Study: Netflix Pivot', type: 'PDF', course: 'Organisational Design', size: '2.4 MB' },
-  { title: 'Macroeconomics Formula Sheet', type: 'Cheat Sheet', course: 'Macroeconomics', size: '1.1 MB' },
-  { title: 'Financial Modeling Excel Template', type: 'XLSX', course: 'Corporate Finance', size: '4.5 MB' },
-  { title: 'Ethics in AI: Reading Material', type: 'Article', course: 'Management Information Systems', size: '0.5 MB' },
+  {
+    title: "HBR Case Study: Netflix Pivot",
+    type: "PDF",
+    course: "Organisational Design",
+    size: "2.4 MB",
+  },
+  {
+    title: "Macroeconomics Formula Sheet",
+    type: "Cheat Sheet",
+    course: "Macroeconomics",
+    size: "1.1 MB",
+  },
+  {
+    title: "Financial Modeling Excel Template",
+    type: "XLSX",
+    course: "Corporate Finance",
+    size: "4.5 MB",
+  },
+  {
+    title: "Ethics in AI: Reading Material",
+    type: "Article",
+    course: "Management Information Systems",
+    size: "0.5 MB",
+  },
 ];
 
 const todos = [
-  { title: 'Approve pending enrollments (Ronald Debbarma)', date: '10 Sep, 10:27', type: 'urgent' },
-  { title: 'Review "Macroeconomics" Video Module 4', date: '9 Sep, 14:41', type: 'normal' },
-  { title: 'Upload Faculty Webinar Recording', date: '6 Sep, 14:00', type: 'normal' },
+  {
+    title: "Approve pending enrollments (Ronald Debbarma)",
+    date: "10 Sep, 10:27",
+    type: "urgent",
+  },
+  {
+    title: 'Review "Macroeconomics" Video Module 4',
+    date: "9 Sep, 14:41",
+    type: "normal",
+  },
+  {
+    title: "Upload Faculty Webinar Recording",
+    date: "6 Sep, 14:00",
+    type: "normal",
+  },
 ];
 
 const alerts = [
-  { title: 'Payment Gateway Maintenance', date: 'Today, 10:09', user: 'System' },
-  { title: 'High Traffic Warning (Exam Server)', date: 'Today, 10:08', user: 'IT Ops' },
-  { title: 'Low Engagement: Shane Mendon', date: 'Today, 10:06', user: 'AI Monitor' },
+  {
+    title: "Payment Gateway Maintenance",
+    date: "Today, 10:09",
+    user: "System",
+  },
+  {
+    title: "High Traffic Warning (Exam Server)",
+    date: "Today, 10:08",
+    user: "IT Ops",
+  },
+  {
+    title: "Low Engagement: Shane Mendon",
+    date: "Today, 10:06",
+    user: "AI Monitor",
+  },
 ];
 
 const notices = [
-  { title: 'New Feature: Live Chat in Class', date: '1 Sep, 16:00' },
-  { title: 'System Downtime Schedule (UTC)', date: '1 Sep, 15:01' },
-  { title: 'Updated Privacy Policy v2.1', date: '1 Sep, 15:00' },
+  { title: "New Feature: Live Chat in Class", date: "1 Sep, 16:00" },
+  { title: "System Downtime Schedule (UTC)", date: "1 Sep, 15:01" },
+  { title: "Updated Privacy Policy v2.1", date: "1 Sep, 15:00" },
 ];
 
 const anonymousReviews = [
-  { id: 1, rating: 5, text: "The explanation of Elasticity was crystal clear today! Loved the real-world examples.", time: "2m ago" },
-  { id: 2, rating: 3, text: "Voice was breaking a bit during the second half. Please check the mic connection.", time: "15m ago" },
-  { id: 3, rating: 4, text: "Great session, but can we have more time for the Q&A segment next time?", time: "42m ago" },
-  { id: 4, rating: 5, text: "Prof. Jagdish is the best! This topic finally makes sense to me.", time: "1h ago" },
+  {
+    id: 1,
+    rating: 5,
+    text: "The explanation of Elasticity was crystal clear today! Loved the real-world examples.",
+    time: "2m ago",
+  },
+  {
+    id: 2,
+    rating: 3,
+    text: "Voice was breaking a bit during the second half. Please check the mic connection.",
+    time: "15m ago",
+  },
+  {
+    id: 3,
+    rating: 4,
+    text: "Great session, but can we have more time for the Q&A segment next time?",
+    time: "42m ago",
+  },
+  {
+    id: 4,
+    rating: 5,
+    text: "Prof. Jagdish is the best! This topic finally makes sense to me.",
+    time: "1h ago",
+  },
 ];
 
 const timetableData = {
-  times: ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'],
-  days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  times: [
+    "09:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "01:00 PM",
+    "02:00 PM",
+    "03:00 PM",
+    "04:00 PM",
+  ],
+  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
   events: [
-    { day: 'Monday', start: '09:00 AM', duration: 2, title: 'Macroeconomics', type: 'Lecture', faculty: 'Prof. Jagdish', color: 'bg-blue-100 border-blue-200 text-blue-700' },
-    { day: 'Monday', start: '02:00 PM', duration: 1.5, title: 'Org Design', type: 'Seminar', faculty: 'Prof. Devjani', color: 'bg-purple-100 border-purple-200 text-purple-700' },
-    { day: 'Tuesday', start: '10:00 AM', duration: 2, title: 'Mgmt Info Systems', type: 'Lab', faculty: 'Prof. Venkatesh', color: 'bg-emerald-100 border-emerald-200 text-emerald-700' },
-    { day: 'Tuesday', start: '01:00 PM', duration: 1, title: 'Critical Thinking', type: 'Lecture', faculty: 'Prof. Jenna', color: 'bg-orange-100 border-orange-200 text-orange-700' },
-    { day: 'Wednesday', start: '09:00 AM', duration: 2, title: 'Corporate Finance', type: 'Lecture', faculty: 'Guest Lecturer', color: 'bg-indigo-100 border-indigo-200 text-indigo-700' },
-    { day: 'Wednesday', start: '03:00 PM', duration: 1, title: 'Decision Modeling', type: 'Workshop', faculty: 'Prof. Vivek', color: 'bg-pink-100 border-pink-200 text-pink-700' },
-    { day: 'Thursday', start: '10:00 AM', duration: 1.5, title: 'Macroeconomics', type: 'Tutorial', faculty: 'Prof. Jagdish', color: 'bg-blue-100 border-blue-200 text-blue-700' },
-    { day: 'Thursday', start: '02:00 PM', duration: 2, title: 'MIS Project', type: 'Group Work', faculty: 'Self-Paced', color: 'bg-gray-100 border-gray-200 text-gray-700' },
-    { day: 'Friday', start: '11:00 AM', duration: 1, title: 'Weekly Quiz', type: 'Assessment', faculty: 'Automated', color: 'bg-red-100 border-red-200 text-red-700' },
-  ]
+    {
+      day: "Monday",
+      start: "09:00 AM",
+      duration: 2,
+      title: "Macroeconomics",
+      type: "Lecture",
+      faculty: "Prof. Jagdish",
+      color: "bg-blue-100 border-blue-200 text-blue-700",
+    },
+    {
+      day: "Monday",
+      start: "02:00 PM",
+      duration: 1.5,
+      title: "Org Design",
+      type: "Seminar",
+      faculty: "Prof. Devjani",
+      color: "bg-purple-100 border-purple-200 text-purple-700",
+    },
+    {
+      day: "Tuesday",
+      start: "10:00 AM",
+      duration: 2,
+      title: "Mgmt Info Systems",
+      type: "Lab",
+      faculty: "Prof. Venkatesh",
+      color: "bg-emerald-100 border-emerald-200 text-emerald-700",
+    },
+    {
+      day: "Tuesday",
+      start: "01:00 PM",
+      duration: 1,
+      title: "Critical Thinking",
+      type: "Lecture",
+      faculty: "Prof. Jenna",
+      color: "bg-orange-100 border-orange-200 text-orange-700",
+    },
+    {
+      day: "Wednesday",
+      start: "09:00 AM",
+      duration: 2,
+      title: "Corporate Finance",
+      type: "Lecture",
+      faculty: "Guest Lecturer",
+      color: "bg-indigo-100 border-indigo-200 text-indigo-700",
+    },
+    {
+      day: "Wednesday",
+      start: "03:00 PM",
+      duration: 1,
+      title: "Decision Modeling",
+      type: "Workshop",
+      faculty: "Prof. Vivek",
+      color: "bg-pink-100 border-pink-200 text-pink-700",
+    },
+    {
+      day: "Thursday",
+      start: "10:00 AM",
+      duration: 1.5,
+      title: "Macroeconomics",
+      type: "Tutorial",
+      faculty: "Prof. Jagdish",
+      color: "bg-blue-100 border-blue-200 text-blue-700",
+    },
+    {
+      day: "Thursday",
+      start: "02:00 PM",
+      duration: 2,
+      title: "MIS Project",
+      type: "Group Work",
+      faculty: "Self-Paced",
+      color: "bg-gray-100 border-gray-200 text-gray-700",
+    },
+    {
+      day: "Friday",
+      start: "11:00 AM",
+      duration: 1,
+      title: "Weekly Quiz",
+      type: "Assessment",
+      faculty: "Automated",
+      color: "bg-red-100 border-red-200 text-red-700",
+    },
+  ],
 };
 
 const getStudentDetails = (id) => {
   const defaults = {
     email: `${id.toLowerCase()}@veridium.edu`,
-    phone: '+91 98765 43210',
-    attendance: '85%',
-    lastLogin: '2 hours ago',
-    grades: { quiz1: '75%', quiz2: '80%' },
+    phone: "+91 98765 43210",
+    attendance: "85%",
+    lastLogin: "2 hours ago",
+    grades: { quiz1: "75%", quiz2: "80%" },
     activity: [
-      { date: 'Sep 20', action: 'Completed Module 3' },
-      { date: 'Sep 18', action: 'Submitted Assignment 1' }
-    ]
+      { date: "Sep 20", action: "Completed Module 3" },
+      { date: "Sep 18", action: "Submitted Assignment 1" },
+    ],
   };
 
-  if (id === 'MBA25019') { // Hariom
+  if (id === "MBA25019") {
+    // Hariom
     return {
       ...defaults,
-      attendance: '45%',
-      lastLogin: '5 days ago',
-      grades: { quiz1: '40%', quiz2: '35%' },
-      tags: ['At Risk', 'Low Engagement'],
-      notes: 'Student is struggling with core concepts. Quiz scores are consistently below threshold.',
+      attendance: "45%",
+      lastLogin: "5 days ago",
+      grades: { quiz1: "40%", quiz2: "35%" },
+      tags: ["At Risk", "Low Engagement"],
+      notes:
+        "Student is struggling with core concepts. Quiz scores are consistently below threshold.",
       activity: [
-        { date: 'Sep 15', action: 'Failed Quiz 2 (35%)' },
-        { date: 'Sep 10', action: 'Logged in' }
-      ]
+        { date: "Sep 15", action: "Failed Quiz 2 (35%)" },
+        { date: "Sep 10", action: "Logged in" },
+      ],
     };
   }
 
-  if (id === 'MBA25044') { // Shane
+  if (id === "MBA25044") {
+    // Shane
     return {
       ...defaults,
-      attendance: '15%',
-      lastLogin: '2 weeks ago',
-      grades: { quiz1: 'N/A', quiz2: 'N/A' },
-      tags: ['Dropped', 'Refund Processed'],
-      dropoutReason: 'Curriculum Mismatch',
-      exitFeedback: 'The course content was too theoretical and did not align with my practical career goals.',
+      attendance: "15%",
+      lastLogin: "2 weeks ago",
+      grades: { quiz1: "N/A", quiz2: "N/A" },
+      tags: ["Dropped", "Refund Processed"],
+      dropoutReason: "Curriculum Mismatch",
+      exitFeedback:
+        "The course content was too theoretical and did not align with my practical career goals.",
       activity: [
-        { date: 'Sep 08', action: 'Requested Withdrawal' },
-        { date: 'Sep 01', action: 'Enrolled' }
-      ]
+        { date: "Sep 08", action: "Requested Withdrawal" },
+        { date: "Sep 01", action: "Enrolled" },
+      ],
     };
   }
 
@@ -246,20 +598,31 @@ const TopNav = () => (
         </div>
         <span className="hidden md:block text-white">Veridium LMS</span>
       </div>
-      
+
       <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
-        <button className="hover:text-white flex items-center transition-colors">My Dashboard <ChevronDown size={14} className="ml-1"/></button>
-        <button className="hover:text-white flex items-center transition-colors">Learners <ChevronDown size={14} className="ml-1"/></button>
-        <button className="hover:text-white flex items-center transition-colors">Content Library <ChevronDown size={14} className="ml-1"/></button>
-        <button className="hover:text-white flex items-center transition-colors">Reports <ChevronDown size={14} className="ml-1"/></button>
+        <button className="hover:text-white flex items-center transition-colors">
+          My Dashboard <ChevronDown size={14} className="ml-1" />
+        </button>
+        <button className="hover:text-white flex items-center transition-colors">
+          Learners <ChevronDown size={14} className="ml-1" />
+        </button>
+        <button className="hover:text-white flex items-center transition-colors">
+          Content Library <ChevronDown size={14} className="ml-1" />
+        </button>
+        <button className="hover:text-white flex items-center transition-colors">
+          Reports <ChevronDown size={14} className="ml-1" />
+        </button>
       </div>
     </div>
 
     <div className="relative w-64">
-      <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-      <input 
-        type="text" 
-        placeholder="Search courses, students..." 
+      <Search
+        size={16}
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+      />
+      <input
+        type="text"
+        placeholder="Search courses, students..."
         className="w-full bg-[#4a5568] text-white text-sm rounded-full pl-10 pr-4 py-1.5 border-none focus:ring-2 focus:ring-emerald-500 outline-none placeholder-gray-300 transition-all"
       />
     </div>
@@ -269,103 +632,149 @@ const TopNav = () => (
 const Sidebar = ({ activeTab, setActiveTab, onReview, onFlag }) => (
   <div className="flex h-full">
     <div className="w-14 bg-white border-r border-gray-200 flex flex-col items-center py-4 space-y-6 text-gray-500 shadow-inner">
-      <button 
-        className={`p-2 rounded-lg transition-colors ${activeTab === 'dashboard' ? 'bg-emerald-50 text-emerald-600' : 'hover:bg-gray-100'}`}
-        onClick={() => setActiveTab('dashboard')}
+      <button
+        className={`p-2 rounded-lg transition-colors ${activeTab === "dashboard" ? "bg-emerald-50 text-emerald-600" : "hover:bg-gray-100"}`}
+        onClick={() => setActiveTab("dashboard")}
         title="Dashboard"
       >
         <Home size={22} />
       </button>
-      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Favorites"><Star size={22} /></button>
+      <button
+        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        title="Favorites"
+      >
+        <Star size={22} />
+      </button>
       <div className="relative">
-        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Notifications"><Bell size={22} /></button>
+        <button
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          title="Notifications"
+        >
+          <Bell size={22} />
+        </button>
         <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
       </div>
-      <button 
-        className={`p-2 rounded-lg transition-colors ${activeTab === 'calendar' ? 'bg-emerald-50 text-emerald-600' : 'hover:bg-gray-100'}`}
-        onClick={() => setActiveTab('calendar')}
+      <button
+        className={`p-2 rounded-lg transition-colors ${activeTab === "calendar" ? "bg-emerald-50 text-emerald-600" : "hover:bg-gray-100"}`}
+        onClick={() => setActiveTab("calendar")}
         title="Calendar"
       >
         <Calendar size={22} />
       </button>
-      <button className="p-2 hover:bg-gray-100 rounded-lg mt-auto transition-colors" title="Help"><HelpCircle size={22} /></button>
-      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Logout"><LogOut size={22} /></button>
+      <button
+        className="p-2 hover:bg-gray-100 rounded-lg mt-auto transition-colors"
+        title="Help"
+      >
+        <HelpCircle size={22} />
+      </button>
+      <button
+        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        title="Logout"
+      >
+        <LogOut size={22} />
+      </button>
     </div>
 
     <div className="w-64 bg-[#f8fafc] border-r border-gray-200 flex flex-col py-4 px-2">
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-4">Platform Navigation</h3>
+      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-4">
+        Platform Navigation
+      </h3>
       <div className="space-y-1">
-        <button 
-          onClick={() => setActiveTab('dashboard')}
-          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === 'dashboard' ? 'bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`}
+        <button
+          onClick={() => setActiveTab("dashboard")}
+          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === "dashboard" ? "bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200" : "text-gray-600 hover:bg-white hover:shadow-sm"}`}
         >
           <span className="truncate">Overview</span>
-          <Home size={14} className={`group-hover:opacity-100 ${activeTab === 'dashboard' ? 'opacity-100' : 'opacity-0'}`} />
+          <Home
+            size={14}
+            className={`group-hover:opacity-100 ${activeTab === "dashboard" ? "opacity-100" : "opacity-0"}`}
+          />
         </button>
 
-        <button 
-          onClick={() => setActiveTab('students')}
-          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === 'students' ? 'bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`}
+        <button
+          onClick={() => setActiveTab("students")}
+          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === "students" ? "bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200" : "text-gray-600 hover:bg-white hover:shadow-sm"}`}
         >
           <span className="truncate">Enrollment & Learners</span>
-          <Users size={14} className={`group-hover:opacity-100 ${activeTab === 'students' ? 'opacity-100' : 'opacity-0'}`} />
+          <Users
+            size={14}
+            className={`group-hover:opacity-100 ${activeTab === "students" ? "opacity-100" : "opacity-0"}`}
+          />
         </button>
 
-        <button 
-          onClick={() => setActiveTab('courses')}
-          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === 'courses' ? 'bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`}
+        <button
+          onClick={() => setActiveTab("courses")}
+          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === "courses" ? "bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200" : "text-gray-600 hover:bg-white hover:shadow-sm"}`}
         >
           <span className="truncate">Content Library</span>
-          <BookOpen size={14} className={`group-hover:opacity-100 ${activeTab === 'courses' ? 'opacity-100' : 'opacity-0'}`} />
+          <BookOpen
+            size={14}
+            className={`group-hover:opacity-100 ${activeTab === "courses" ? "opacity-100" : "opacity-0"}`}
+          />
         </button>
 
-        <button 
-          onClick={() => setActiveTab('reports')}
-          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === 'reports' ? 'bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`}
+        <button
+          onClick={() => setActiveTab("reports")}
+          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === "reports" ? "bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200" : "text-gray-600 hover:bg-white hover:shadow-sm"}`}
         >
           <span className="truncate">Reports & Grievances</span>
-          <FileText size={14} className={`group-hover:opacity-100 ${activeTab === 'reports' ? 'opacity-100' : 'opacity-0'}`} />
+          <FileText
+            size={14}
+            className={`group-hover:opacity-100 ${activeTab === "reports" ? "opacity-100" : "opacity-0"}`}
+          />
         </button>
 
-        <button 
-          onClick={() => setActiveTab('analytics')}
-          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === 'analytics' ? 'bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`}
+        <button
+          onClick={() => setActiveTab("analytics")}
+          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === "analytics" ? "bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200" : "text-gray-600 hover:bg-white hover:shadow-sm"}`}
         >
           <span className="truncate">Learning Analytics</span>
-          <BarChart2 size={14} className={`group-hover:opacity-100 ${activeTab === 'analytics' ? 'opacity-100' : 'opacity-0'}`} />
+          <BarChart2
+            size={14}
+            className={`group-hover:opacity-100 ${activeTab === "analytics" ? "opacity-100" : "opacity-0"}`}
+          />
         </button>
 
-        <button 
-          onClick={() => setActiveTab('calendar')}
-          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === 'calendar' ? 'bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`}
+        <button
+          onClick={() => setActiveTab("calendar")}
+          className={`w-full text-left px-3 py-2 text-sm rounded transition-all flex justify-between group ${activeTab === "calendar" ? "bg-white shadow-sm text-emerald-600 font-medium ring-1 ring-gray-200" : "text-gray-600 hover:bg-white hover:shadow-sm"}`}
         >
           <span className="truncate">Class Schedule</span>
-          <Calendar size={14} className={`group-hover:opacity-100 ${activeTab === 'calendar' ? 'opacity-100' : 'opacity-0'}`} />
+          <Calendar
+            size={14}
+            className={`group-hover:opacity-100 ${activeTab === "calendar" ? "opacity-100" : "opacity-0"}`}
+          />
         </button>
       </div>
 
       <div className="mt-8 space-y-1">
-         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-2">Quick Actions</h3>
-         <button 
-           onClick={onFlag}
-           className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-white hover:shadow-sm rounded transition-all flex items-center"
-         >
-            <AlertCircle size={14} className="mr-2 text-amber-500"/> Flag At-Risk Learner
-         </button>
-         <button 
-           onClick={onReview}
-           className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-white hover:shadow-sm rounded transition-all flex items-center"
-         >
-            <MonitorPlay size={14} className="mr-2 text-blue-500"/> Review Live Session
-         </button>
+        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider px-3 mb-2">
+          Quick Actions
+        </h3>
+        <button
+          onClick={onFlag}
+          className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-white hover:shadow-sm rounded transition-all flex items-center"
+        >
+          <AlertCircle size={14} className="mr-2 text-amber-500" /> Flag At-Risk
+          Learner
+        </button>
+        <button
+          onClick={onReview}
+          className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-white hover:shadow-sm rounded transition-all flex items-center"
+        >
+          <MonitorPlay size={14} className="mr-2 text-blue-500" /> Review Live
+          Session
+        </button>
       </div>
-      
+
       <div className="mt-auto">
         <div className="h-32 bg-emerald-50 rounded border border-emerald-100 mx-1 flex flex-col items-center justify-center text-emerald-700 p-4 text-center">
-           <p className="text-xs font-bold uppercase mb-1">Next Live Class</p>
-           <p className="font-bold text-sm">Macroeconomics</p>
-           <p className="text-xs mt-1">Starts in 45 mins</p>
-           <button className="mt-2 bg-emerald-600 text-white text-xs px-3 py-1 rounded-full hover:bg-emerald-700">Join Host</button>
+          <p className="text-xs font-bold uppercase mb-1">Next Live Class</p>
+          <p className="font-bold text-sm">Macroeconomics</p>
+          <p className="text-xs mt-1">Starts in 45 mins</p>
+          <button className="mt-2 bg-emerald-600 text-white text-xs px-3 py-1 rounded-full hover:bg-emerald-700">
+            Join Host
+          </button>
         </div>
       </div>
     </div>
@@ -375,14 +784,23 @@ const Sidebar = ({ activeTab, setActiveTab, onReview, onFlag }) => (
 const InfoCard = ({ title, count, items }) => (
   <div className="bg-white rounded-lg border border-gray-200 shadow-sm flex-1 min-w-[300px]">
     <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-lg">
-      <h3 className="font-bold text-gray-700">{title} <span className="text-gray-400 font-normal">({count})</span></h3>
+      <h3 className="font-bold text-gray-700">
+        {title} <span className="text-gray-400 font-normal">({count})</span>
+      </h3>
     </div>
     <div className="p-2">
       {items.map((item, idx) => (
-        <div key={idx} className="p-3 hover:bg-gray-50 rounded border-b border-gray-50 last:border-0 transition-colors cursor-pointer">
+        <div
+          key={idx}
+          className="p-3 hover:bg-gray-50 rounded border-b border-gray-50 last:border-0 transition-colors cursor-pointer"
+        >
           <div className="flex justify-between items-start">
-             <p className="text-sm font-medium text-gray-800 mb-1 truncate flex-1">{item.title}</p>
-             {item.type === 'urgent' && <span className="w-2 h-2 rounded-full bg-red-500 ml-2 mt-1.5"></span>}
+            <p className="text-sm font-medium text-gray-800 mb-1 truncate flex-1">
+              {item.title}
+            </p>
+            {item.type === "urgent" && (
+              <span className="w-2 h-2 rounded-full bg-red-500 ml-2 mt-1.5"></span>
+            )}
           </div>
           <p className="text-xs text-gray-400">{item.date}</p>
         </div>
@@ -394,20 +812,34 @@ const InfoCard = ({ title, count, items }) => (
 const MetricRow = ({ label, value, subtext, comparison, color }) => (
   <div className="py-4 border-b border-gray-100 last:border-0">
     <h4 className="text-sm text-gray-600 font-medium mb-1 flex justify-between items-center">
-        {label}
+      {label}
     </h4>
     <div className="flex items-end justify-between">
       <div className="flex items-baseline">
-        <span className={`text-3xl font-light tracking-tight ${color ? '' : 'text-gray-800'}`} style={{ color: color }}>{value}</span>
+        <span
+          className={`text-3xl font-light tracking-tight ${color ? "" : "text-gray-800"}`}
+          style={{ color: color }}
+        >
+          {value}
+        </span>
       </div>
-      
+
       {comparison ? (
         <div className="flex flex-col items-end w-24">
           <div className="w-full h-1.5 bg-gray-100 rounded-full mb-1 overflow-hidden">
-             <div className="h-full rounded-full" style={{ width: '100%', backgroundColor: '#e5e7eb' }}></div>
+            <div
+              className="h-full rounded-full"
+              style={{ width: "100%", backgroundColor: "#e5e7eb" }}
+            ></div>
           </div>
           <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-             <div className="h-full rounded-full" style={{ width: `${(comparison[1]/comparison[0])*100}%`, backgroundColor: color || '#9ca3af' }}></div>
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${(comparison[1] / comparison[0]) * 100}%`,
+                backgroundColor: color || "#9ca3af",
+              }}
+            ></div>
           </div>
           <span className="text-[10px] text-gray-400 mt-1">vs Target</span>
         </div>
@@ -421,15 +853,15 @@ const MetricRow = ({ label, value, subtext, comparison, color }) => (
 // --- Main Application ---
 
 export default function VeridiumMIS() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showRiskModal, setShowRiskModal] = useState(false);
 
   // Filtering logic
-  const filteredStudents = enrollmentData.filter(student => {
-    if (statusFilter === 'All') return true;
+  const filteredStudents = enrollmentData.filter((student) => {
+    if (statusFilter === "All") return true;
     return student.status === statusFilter;
   });
 
@@ -439,42 +871,69 @@ export default function VeridiumMIS() {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden max-h-[90vh] flex flex-col">
         <div className="bg-blue-600 p-4 text-white flex justify-between items-center shrink-0">
           <h3 className="font-bold">Session Feedback Dashboard</h3>
-          <button onClick={() => setShowReviewModal(false)}><X size={20}/></button>
+          <button onClick={() => setShowReviewModal(false)}>
+            <X size={20} />
+          </button>
         </div>
-        
+
         <div className="p-6 overflow-y-auto">
           {/* Summary Section (New) */}
           <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex justify-between items-center">
-             <div>
-               <p className="text-xs text-blue-600 font-bold uppercase">Session Rating</p>
-               <h2 className="text-3xl font-bold text-blue-900">4.8<span className="text-sm text-blue-400 font-normal">/5</span></h2>
-             </div>
-             <div className="text-right">
-                <p className="text-xs text-gray-500">Total Reviews</p>
-                <p className="font-bold text-gray-800">24 Students</p>
-             </div>
+            <div>
+              <p className="text-xs text-blue-600 font-bold uppercase">
+                Session Rating
+              </p>
+              <h2 className="text-3xl font-bold text-blue-900">
+                4.8<span className="text-sm text-blue-400 font-normal">/5</span>
+              </h2>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-gray-500">Total Reviews</p>
+              <p className="font-bold text-gray-800">24 Students</p>
+            </div>
           </div>
 
           {/* Anonymous Feed Section */}
           <div>
             <h4 className="text-sm font-bold text-gray-800 mb-4 flex items-center justify-between">
-               <span className="flex items-center"><MessageCircle size={16} className="mr-2 text-blue-500"/> Live Student Feed</span>
-               <span className="px-2 py-1 bg-green-100 text-green-700 text-[10px] rounded-full animate-pulse">● Live</span>
+              <span className="flex items-center">
+                <MessageCircle size={16} className="mr-2 text-blue-500" /> Live
+                Student Feed
+              </span>
+              <span className="px-2 py-1 bg-green-100 text-green-700 text-[10px] rounded-full animate-pulse">
+                ● Live
+              </span>
             </h4>
             <div className="space-y-3">
-               {anonymousReviews.map((review) => (
-                 <div key={review.id} className="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                    <div className="flex justify-between items-start mb-1">
-                       <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                             <Star key={i} size={10} fill={i < review.rating ? "#FBBF24" : "none"} className={i < review.rating ? "text-yellow-400" : "text-gray-300"} />
-                          ))}
-                       </div>
-                       <span className="text-[10px] text-gray-400">{review.time}</span>
+              {anonymousReviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="bg-gray-50 p-3 rounded-lg border border-gray-100"
+                >
+                  <div className="flex justify-between items-start mb-1">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={10}
+                          fill={i < review.rating ? "#FBBF24" : "none"}
+                          className={
+                            i < review.rating
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }
+                        />
+                      ))}
                     </div>
-                    <p className="text-xs text-gray-600 italic leading-relaxed">"{review.text}"</p>
-                 </div>
-               ))}
+                    <span className="text-[10px] text-gray-400">
+                      {review.time}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600 italic leading-relaxed">
+                    "{review.text}"
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -488,29 +947,50 @@ export default function VeridiumMIS() {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
         <div className="bg-amber-500 p-4 text-white flex justify-between items-center">
           <h3 className="font-bold">Flag At-Risk Learner</h3>
-          <button onClick={() => setShowRiskModal(false)}><X size={20}/></button>
+          <button onClick={() => setShowRiskModal(false)}>
+            <X size={20} />
+          </button>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Select Student</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">
+              Select Student
+            </label>
             <select className="w-full p-2 border rounded-lg text-sm">
-               {enrollmentData.map(s => <option key={s.id}>{s.name} ({s.id})</option>)}
+              {enrollmentData.map((s) => (
+                <option key={s.id}>
+                  {s.name} ({s.id})
+                </option>
+              ))}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Risk Factor</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">
+              Risk Factor
+            </label>
             <select className="w-full p-2 border rounded-lg text-sm">
-               <option>Absent for &gt;3 sessions</option>
-               <option>Failed recent assessment</option>
-               <option>Behavioral Concern</option>
-               <option>Plagiarism Detected</option>
+              <option>Absent for &gt;3 sessions</option>
+              <option>Failed recent assessment</option>
+              <option>Behavioral Concern</option>
+              <option>Plagiarism Detected</option>
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Faculty Notes</label>
-            <textarea className="w-full p-2 border rounded-lg text-sm" rows="3" placeholder="Details..."></textarea>
+            <label className="block text-xs font-bold text-gray-700 mb-1">
+              Faculty Notes
+            </label>
+            <textarea
+              className="w-full p-2 border rounded-lg text-sm"
+              rows="3"
+              placeholder="Details..."
+            ></textarea>
           </div>
-          <button className="w-full bg-amber-600 text-white py-2 rounded-lg font-bold hover:bg-amber-700" onClick={() => setShowRiskModal(false)}>Raise Flag</button>
+          <button
+            className="w-full bg-amber-600 text-white py-2 rounded-lg font-bold hover:bg-amber-700"
+            onClick={() => setShowRiskModal(false)}
+          >
+            Raise Flag
+          </button>
         </div>
       </div>
     </div>
@@ -527,9 +1007,9 @@ export default function VeridiumMIS() {
           <div className="bg-[#2d3748] p-6 text-white flex justify-between items-start">
             <div className="flex items-center">
               {student.image ? (
-                <img 
-                  src={student.image} 
-                  alt={student.name} 
+                <img
+                  src={student.image}
+                  alt={student.name}
                   className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-gray-500"
                 />
               ) : (
@@ -539,21 +1019,37 @@ export default function VeridiumMIS() {
               )}
               <div>
                 <h2 className="text-2xl font-bold">{student.name}</h2>
-                <p className="text-gray-400 text-sm">{student.id} • {student.course}</p>
+                <p className="text-gray-400 text-sm">
+                  {student.id} • {student.course}
+                </p>
                 <div className="mt-2 flex gap-2">
-                   <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
-                      student.status === 'Active' ? 'bg-green-900 border-green-700 text-green-300' : 
-                      student.status === 'Dropped' ? 'bg-red-900 border-red-700 text-red-300' : 'bg-yellow-900 border-yellow-700 text-yellow-300'
-                   }`}>
-                     {student.status}
-                   </span>
-                   {details.tags && details.tags.map((tag, i) => (
-                     <span key={i} className="px-2 py-0.5 rounded text-xs font-bold bg-gray-700 border border-gray-600 text-gray-300">{tag}</span>
-                   ))}
+                  <span
+                    className={`px-2 py-0.5 rounded text-xs font-bold border ${
+                      student.status === "Active"
+                        ? "bg-green-900 border-green-700 text-green-300"
+                        : student.status === "Dropped"
+                          ? "bg-red-900 border-red-700 text-red-300"
+                          : "bg-yellow-900 border-yellow-700 text-yellow-300"
+                    }`}
+                  >
+                    {student.status}
+                  </span>
+                  {details.tags &&
+                    details.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-0.5 rounded text-xs font-bold bg-gray-700 border border-gray-600 text-gray-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                 </div>
               </div>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white"
+            >
               <X size={24} />
             </button>
           </div>
@@ -563,88 +1059,134 @@ export default function VeridiumMIS() {
             {/* Left Column: Info */}
             <div className="md:col-span-1 space-y-4 border-r border-gray-100 pr-4">
               <div>
-                <label className="text-xs font-bold text-gray-400 uppercase">Contact</label>
+                <label className="text-xs font-bold text-gray-400 uppercase">
+                  Contact
+                </label>
                 <div className="flex items-center text-sm text-gray-600 mt-1">
-                  <Mail size={14} className="mr-2"/> {details.email}
+                  <Mail size={14} className="mr-2" /> {details.email}
                 </div>
                 <div className="flex items-center text-sm text-gray-600 mt-1">
-                  <Phone size={14} className="mr-2"/> {details.phone}
+                  <Phone size={14} className="mr-2" /> {details.phone}
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-400 uppercase">Metrics</label>
+                <label className="text-xs font-bold text-gray-400 uppercase">
+                  Metrics
+                </label>
                 <div className="mt-2 space-y-2">
-                   <div className="flex justify-between text-sm">
-                     <span className="text-gray-600">Attendance</span>
-                     <span className={`font-bold ${parseInt(details.attendance) < 50 ? 'text-red-500' : 'text-gray-800'}`}>{details.attendance}</span>
-                   </div>
-                   <div className="flex justify-between text-sm">
-                     <span className="text-gray-600">Last Login</span>
-                     <span className="text-gray-800">{details.lastLogin}</span>
-                   </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Attendance</span>
+                    <span
+                      className={`font-bold ${parseInt(details.attendance) < 50 ? "text-red-500" : "text-gray-800"}`}
+                    >
+                      {details.attendance}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Last Login</span>
+                    <span className="text-gray-800">{details.lastLogin}</span>
+                  </div>
                 </div>
               </div>
-              
-              {student.status === 'Dropped' && details.dropoutReason && (
-                 <div className="bg-red-50 p-3 rounded-lg border border-red-100">
-                    <label className="text-xs font-bold text-red-600 uppercase block mb-1">Exit Reason</label>
-                    <p className="text-sm text-red-800 italic">"{details.dropoutReason}"</p>
-                 </div>
+
+              {student.status === "Dropped" && details.dropoutReason && (
+                <div className="bg-red-50 p-3 rounded-lg border border-red-100">
+                  <label className="text-xs font-bold text-red-600 uppercase block mb-1">
+                    Exit Reason
+                  </label>
+                  <p className="text-sm text-red-800 italic">
+                    "{details.dropoutReason}"
+                  </p>
+                </div>
               )}
             </div>
 
             {/* Right Column: Detailed Analysis */}
             <div className="md:col-span-2 space-y-6">
-               {/* Contextual Alert/Nudge Box */}
-               {student.risk && student.status === 'Active' && (
-                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex justify-between items-center">
-                    <div>
-                      <h4 className="text-amber-800 font-bold flex items-center"><AlertCircle size={16} className="mr-2"/> Student at Risk</h4>
-                      <p className="text-xs text-amber-700 mt-1">{details.notes}</p>
-                    </div>
-                    <button className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded text-sm font-bold shadow-sm flex items-center">
-                       <MessageCircle size={16} className="mr-2"/> Nudge Learner
+              {/* Contextual Alert/Nudge Box */}
+              {student.risk && student.status === "Active" && (
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex justify-between items-center">
+                  <div>
+                    <h4 className="text-amber-800 font-bold flex items-center">
+                      <AlertCircle size={16} className="mr-2" /> Student at Risk
+                    </h4>
+                    <p className="text-xs text-amber-700 mt-1">
+                      {details.notes}
+                    </p>
+                  </div>
+                  <button className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded text-sm font-bold shadow-sm flex items-center">
+                    <MessageCircle size={16} className="mr-2" /> Nudge Learner
+                  </button>
+                </div>
+              )}
+
+              {student.status === "Dropped" && (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h4 className="text-gray-800 font-bold flex items-center mb-2">
+                    <FileText size={16} className="mr-2" /> Exit Interview
+                    Feedback
+                  </h4>
+                  <p className="text-sm text-gray-600 italic">
+                    "{details.exitFeedback}"
+                  </p>
+                  <div className="mt-3 flex gap-2">
+                    <button className="text-xs bg-white border border-gray-300 px-3 py-1 rounded hover:bg-gray-50 text-gray-600">
+                      View Full Log
                     </button>
-                 </div>
-               )}
+                    <button className="text-xs bg-white border border-gray-300 px-3 py-1 rounded hover:bg-gray-50 text-gray-600">
+                      Contact for Re-enrollment
+                    </button>
+                  </div>
+                </div>
+              )}
 
-               {student.status === 'Dropped' && (
-                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-gray-800 font-bold flex items-center mb-2"><FileText size={16} className="mr-2"/> Exit Interview Feedback</h4>
-                    <p className="text-sm text-gray-600 italic">"{details.exitFeedback}"</p>
-                    <div className="mt-3 flex gap-2">
-                       <button className="text-xs bg-white border border-gray-300 px-3 py-1 rounded hover:bg-gray-50 text-gray-600">View Full Log</button>
-                       <button className="text-xs bg-white border border-gray-300 px-3 py-1 rounded hover:bg-gray-50 text-gray-600">Contact for Re-enrollment</button>
+              <div>
+                <h4 className="font-bold text-gray-800 mb-3 flex items-center">
+                  <Activity size={16} className="mr-2 text-blue-500" /> Recent
+                  Activity
+                </h4>
+                <div className="space-y-3">
+                  {details.activity.map((act, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center text-sm border-l-2 border-gray-200 pl-3 py-1"
+                    >
+                      <span className="text-gray-400 w-16 text-xs">
+                        {act.date}
+                      </span>
+                      <span className="text-gray-700 font-medium">
+                        {act.action}
+                      </span>
                     </div>
-                 </div>
-               )}
+                  ))}
+                </div>
+              </div>
 
-               <div>
-                 <h4 className="font-bold text-gray-800 mb-3 flex items-center"><Activity size={16} className="mr-2 text-blue-500"/> Recent Activity</h4>
-                 <div className="space-y-3">
-                    {details.activity.map((act, i) => (
-                      <div key={i} className="flex items-center text-sm border-l-2 border-gray-200 pl-3 py-1">
-                        <span className="text-gray-400 w-16 text-xs">{act.date}</span>
-                        <span className="text-gray-700 font-medium">{act.action}</span>
+              {student.status === "Active" && (
+                <div>
+                  <h4 className="font-bold text-gray-800 mb-3">
+                    Assessment Performance
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    {Object.entries(details.grades).map(([key, val]) => (
+                      <div
+                        key={key}
+                        className="bg-gray-50 p-3 rounded border border-gray-100"
+                      >
+                        <span className="text-xs text-gray-500 uppercase block mb-1">
+                          {key}
+                        </span>
+                        <span
+                          className={`text-lg font-bold ${parseInt(val) < 50 ? "text-red-500" : "text-green-600"}`}
+                        >
+                          {val}
+                        </span>
                       </div>
                     ))}
-                 </div>
-               </div>
-               
-               {student.status === 'Active' && (
-                   <div>
-                    <h4 className="font-bold text-gray-800 mb-3">Assessment Performance</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                        {Object.entries(details.grades).map(([key, val]) => (
-                          <div key={key} className="bg-gray-50 p-3 rounded border border-gray-100">
-                             <span className="text-xs text-gray-500 uppercase block mb-1">{key}</span>
-                             <span className={`text-lg font-bold ${parseInt(val) < 50 ? 'text-red-500' : 'text-green-600'}`}>{val}</span>
-                          </div>
-                        ))}
-                    </div>
-                   </div>
-               )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -656,24 +1198,28 @@ export default function VeridiumMIS() {
     <div className="flex flex-col h-screen bg-[#f0f2f5] font-sans overflow-hidden">
       <TopNav />
 
-      {selectedStudent && <StudentProfileView student={selectedStudent} onClose={() => setSelectedStudent(null)} />}
+      {selectedStudent && (
+        <StudentProfileView
+          student={selectedStudent}
+          onClose={() => setSelectedStudent(null)}
+        />
+      )}
       {showReviewModal && <ReviewModal />}
       {showRiskModal && <RiskModal />}
 
       <div className="flex flex-1 overflow-hidden">
         <div className="hidden lg:block h-full shadow-xl z-10">
-          <Sidebar 
-            activeTab={activeTab} 
-            setActiveTab={setActiveTab} 
+          <Sidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
             onReview={() => setShowReviewModal(true)}
             onFlag={() => setShowRiskModal(true)}
           />
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
-          
           {/* DASHBOARD VIEW */}
-          {activeTab === 'dashboard' && (
+          {activeTab === "dashboard" && (
             <>
               <div className="flex flex-wrap gap-4 mb-6">
                 <InfoCard title="Tasks" count={3} items={todos} />
@@ -682,50 +1228,81 @@ export default function VeridiumMIS() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                 {/* Teaching Insights - NEW */}
-                 <div className="lg:col-span-2 bg-gradient-to-r from-emerald-50 to-white p-6 rounded-xl border border-emerald-100 shadow-sm">
-                    <h3 className="text-lg font-bold text-emerald-800 mb-3 flex items-center">
-                       <Star className="mr-2 fill-emerald-500 text-emerald-500"/> Teaching Insights & Recommendations
-                    </h3>
-                    <div className="space-y-3">
-                       <div className="flex items-start p-3 bg-white rounded-lg border border-emerald-100">
-                          <div className="bg-emerald-100 p-2 rounded-full mr-3 text-emerald-600"><TrendingUp size={16}/></div>
-                          <div>
-                             <p className="text-sm font-bold text-gray-800">Boost Engagement in First 15 Mins</p>
-                             <p className="text-xs text-gray-500">Data shows a 12% drop-off at minute 15. Try adding a live poll or interactive Q&A at the start of your lecture.</p>
-                          </div>
-                       </div>
-                       <div className="flex items-start p-3 bg-white rounded-lg border border-emerald-100">
-                          <div className="bg-blue-100 p-2 rounded-full mr-3 text-blue-600"><FileText size={16}/></div>
-                          <div>
-                             <p className="text-sm font-bold text-gray-800">Upload Supplemental Reading</p>
-                             <p className="text-xs text-gray-500">Students are searching for "Derivatives" frequently. Adding a cheat sheet to the Content Library might help.</p>
-                          </div>
-                       </div>
+                {/* Teaching Insights - NEW */}
+                <div className="lg:col-span-2 bg-gradient-to-r from-emerald-50 to-white p-6 rounded-xl border border-emerald-100 shadow-sm">
+                  <h3 className="text-lg font-bold text-emerald-800 mb-3 flex items-center">
+                    <Star className="mr-2 fill-emerald-500 text-emerald-500" />{" "}
+                    Teaching Insights & Recommendations
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start p-3 bg-white rounded-lg border border-emerald-100">
+                      <div className="bg-emerald-100 p-2 rounded-full mr-3 text-emerald-600">
+                        <TrendingUp size={16} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">
+                          Boost Engagement in First 15 Mins
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Data shows a 12% drop-off at minute 15. Try adding a
+                          live poll or interactive Q&A at the start of your
+                          lecture.
+                        </p>
+                      </div>
                     </div>
-                 </div>
+                    <div className="flex items-start p-3 bg-white rounded-lg border border-emerald-100">
+                      <div className="bg-blue-100 p-2 rounded-full mr-3 text-blue-600">
+                        <FileText size={16} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">
+                          Upload Supplemental Reading
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Students are searching for "Derivatives" frequently.
+                          Adding a cheat sheet to the Content Library might
+                          help.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                 {/* Attendance Tracker - NEW */}
-                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 className="font-bold text-gray-700 mb-4">Weekly Attendance</h3>
-                    <div className="h-40">
-                       <ResponsiveContainer width="100%" height="100%">
-                          <BarChart data={attendanceTrend}>
-                             <XAxis dataKey="day" fontSize={10} axisLine={false} tickLine={false}/>
-                             <Tooltip />
-                             <Bar dataKey="count" fill="#10B981" radius={[4, 4, 0, 0]} />
-                          </BarChart>
-                       </ResponsiveContainer>
-                    </div>
-                    <p className="text-center text-xs text-gray-400 mt-2">Avg: 191 Learners/Day</p>
-                 </div>
+                {/* Attendance Tracker - NEW */}
+                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                  <h3 className="font-bold text-gray-700 mb-4">
+                    Weekly Attendance
+                  </h3>
+                  <div className="h-40">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={attendanceTrend}>
+                        <XAxis
+                          dataKey="day"
+                          fontSize={10}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <Tooltip />
+                        <Bar
+                          dataKey="count"
+                          fill="#10B981"
+                          radius={[4, 4, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="text-center text-xs text-gray-400 mt-2">
+                    Avg: 191 Learners/Day
+                  </p>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white p-6 rounded-b-lg rounded-tr-lg shadow-sm border border-gray-200">
                 {/* Column 1: Platform Engagement */}
                 <div>
                   <h3 className="text-base font-bold text-gray-700 mb-4 border-b border-gray-200 pb-2 flex items-center">
-                      <MonitorPlay size={16} className="mr-2 text-emerald-500"/> Engagement
+                    <MonitorPlay size={16} className="mr-2 text-emerald-500" />{" "}
+                    Engagement
                   </h3>
                   {engagementMetrics.map((item, idx) => (
                     <MetricRow key={idx} {...item} />
@@ -735,7 +1312,8 @@ export default function VeridiumMIS() {
                 {/* Column 2: Learning Risks */}
                 <div className="lg:border-l lg:border-r border-gray-200 lg:px-6">
                   <h3 className="text-base font-bold text-gray-700 mb-4 border-b border-gray-200 pb-2 flex items-center">
-                      <AlertCircle size={16} className="mr-2 text-amber-500"/> Risks & Issues
+                    <AlertCircle size={16} className="mr-2 text-amber-500" />{" "}
+                    Risks & Issues
                   </h3>
                   {riskMetrics.map((item, idx) => (
                     <MetricRow key={idx} {...item} color="#ef4444" />
@@ -745,7 +1323,7 @@ export default function VeridiumMIS() {
                 {/* Column 3: Learning Outcomes */}
                 <div>
                   <h3 className="text-base font-bold text-gray-700 mb-4 border-b border-gray-200 pb-2 flex items-center">
-                      <Award size={16} className="mr-2 text-blue-500"/> Outcomes
+                    <Award size={16} className="mr-2 text-blue-500" /> Outcomes
                   </h3>
                   {outcomeMetrics.map((item, idx) => (
                     <MetricRow key={idx} {...item} />
@@ -756,25 +1334,33 @@ export default function VeridiumMIS() {
           )}
 
           {/* STUDENTS VIEW */}
-          {activeTab === 'students' && (
+          {activeTab === "students" && (
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
               <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                 <div className="flex items-center gap-4">
-                    <h3 className="font-bold text-gray-700">Learner Registry <span className="text-gray-400 font-normal">({filteredStudents.length})</span></h3>
-                    {/* STATUS FILTER */}
-                    <div className="relative flex items-center">
-                        <Filter size={14} className="text-gray-400 absolute left-2"/>
-                        <select 
-                          className="pl-7 pr-8 py-1 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500 text-gray-600"
-                          value={statusFilter}
-                          onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                           <option value="All">Status: All</option>
-                           <option value="Active">Status: Active</option>
-                           <option value="Pending">Status: Pending</option>
-                           <option value="Dropped">Status: Dropped</option>
-                        </select>
-                    </div>
+                  <h3 className="font-bold text-gray-700">
+                    Learner Registry{" "}
+                    <span className="text-gray-400 font-normal">
+                      ({filteredStudents.length})
+                    </span>
+                  </h3>
+                  {/* STATUS FILTER */}
+                  <div className="relative flex items-center">
+                    <Filter
+                      size={14}
+                      className="text-gray-400 absolute left-2"
+                    />
+                    <select
+                      className="pl-7 pr-8 py-1 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500 text-gray-600"
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                    >
+                      <option value="All">Status: All</option>
+                      <option value="Active">Status: Active</option>
+                      <option value="Pending">Status: Pending</option>
+                      <option value="Dropped">Status: Dropped</option>
+                    </select>
+                  </div>
                 </div>
                 <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors">
                   + Enroll Learner
@@ -794,35 +1380,54 @@ export default function VeridiumMIS() {
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {filteredStudents.map((student) => (
-                      <tr key={student.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-3 font-medium text-gray-900">{student.id}</td>
+                      <tr
+                        key={student.id}
+                        className="hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="px-6 py-3 font-medium text-gray-900">
+                          {student.id}
+                        </td>
                         <td className="px-6 py-3 font-medium flex items-center">
-                           {student.risk && <AlertCircle size={12} className="text-red-500 mr-1" />}
-                           {student.name}
+                          {student.risk && (
+                            <AlertCircle
+                              size={12}
+                              className="text-red-500 mr-1"
+                            />
+                          )}
+                          {student.name}
                         </td>
                         <td className="px-6 py-3">{student.course}</td>
                         <td className="px-6 py-3">
-                          <span className={`px-2 py-1 rounded text-xs font-bold ${
-                            student.status === 'Active' ? 'bg-green-100 text-green-700' :
-                            student.status === 'Pending' ? 'bg-amber-100 text-amber-700' :
-                            'bg-red-100 text-red-700'
-                          }`}>
+                          <span
+                            className={`px-2 py-1 rounded text-xs font-bold ${
+                              student.status === "Active"
+                                ? "bg-green-100 text-green-700"
+                                : student.status === "Pending"
+                                  ? "bg-amber-100 text-amber-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
                             {student.status}
                           </span>
                         </td>
                         <td className="px-6 py-3">
-                            <div className="w-24 bg-gray-200 rounded-full h-1.5">
-                                <div className={`h-1.5 rounded-full ${student.risk ? 'bg-red-500' : 'bg-blue-500'}`} style={{width: `${student.progress}%`}}></div>
-                            </div>
-                            <span className="text-xs text-gray-400 mt-1">{student.progress}%</span>
+                          <div className="w-24 bg-gray-200 rounded-full h-1.5">
+                            <div
+                              className={`h-1.5 rounded-full ${student.risk ? "bg-red-500" : "bg-blue-500"}`}
+                              style={{ width: `${student.progress}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-xs text-gray-400 mt-1">
+                            {student.progress}%
+                          </span>
                         </td>
                         <td className="px-6 py-3 text-right">
-                           <button 
-                             onClick={() => setSelectedStudent(student)}
-                             className="text-emerald-600 hover:text-emerald-700 text-xs font-bold bg-emerald-50 px-2 py-1 rounded border border-emerald-100"
-                           >
-                             PROFILE
-                           </button>
+                          <button
+                            onClick={() => setSelectedStudent(student)}
+                            className="text-emerald-600 hover:text-emerald-700 text-xs font-bold bg-emerald-50 px-2 py-1 rounded border border-emerald-100"
+                          >
+                            PROFILE
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -833,31 +1438,49 @@ export default function VeridiumMIS() {
           )}
 
           {/* COURSES VIEW */}
-          {activeTab === 'courses' && (
+          {activeTab === "courses" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                 <h2 className="text-xl font-bold text-gray-700">Content Library & Progress</h2>
-                 <div className="flex space-x-2">
-                    <button className="px-3 py-1 bg-emerald-500 text-white rounded text-sm shadow-sm hover:bg-emerald-600">Add Module</button>
-                 </div>
+                <h2 className="text-xl font-bold text-gray-700">
+                  Content Library & Progress
+                </h2>
+                <div className="flex space-x-2">
+                  <button className="px-3 py-1 bg-emerald-500 text-white rounded text-sm shadow-sm hover:bg-emerald-600">
+                    Add Module
+                  </button>
+                </div>
               </div>
-              
+
               {/* Course Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {courseData.map((course, idx) => (
-                  <div key={idx} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                  <div
+                    key={idx}
+                    className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
+                  >
                     <div className="flex justify-between items-start mb-3">
                       <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                         <MonitorPlay size={20} />
                       </div>
-                      <span className={`text-xs px-2 py-1 rounded font-medium ${course.status === 'Live' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-                          {course.status === 'Live' ? '● Live Now' : course.status}
+                      <span
+                        className={`text-xs px-2 py-1 rounded font-medium ${course.status === "Live" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                      >
+                        {course.status === "Live"
+                          ? "● Live Now"
+                          : course.status}
                       </span>
                     </div>
-                    <h3 className="font-bold text-gray-800 mb-1">{course.name}</h3>
-                    <p className="text-sm text-gray-500 mb-4">{course.faculty}</p>
+                    <h3 className="font-bold text-gray-800 mb-1">
+                      {course.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 mb-4">
+                      {course.faculty}
+                    </p>
                     <div className="w-full bg-gray-100 rounded-full h-2">
-                        <div className="bg-emerald-500 h-2 rounded-full" style={{width: `${course.completion}%`}}></div>
+                      <div
+                        className="bg-emerald-500 h-2 rounded-full"
+                        style={{ width: `${course.completion}%` }}
+                      ></div>
                     </div>
                   </div>
                 ))}
@@ -865,184 +1488,326 @@ export default function VeridiumMIS() {
 
               {/* New: Case Studies & Resources */}
               <div className="mt-8">
-                 <h3 className="text-lg font-bold text-gray-700 mb-4 flex items-center"><BookOpen size={20} className="mr-2 text-blue-500"/> Case Studies & Resources</h3>
-                 <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                    {resourcesData.map((res, i) => (
-                       <div key={i} className="flex items-center justify-between p-4 border-b border-gray-100 last:border-0 hover:bg-gray-50">
-                          <div className="flex items-center">
-                             <div className="bg-blue-50 p-2 rounded text-blue-600 mr-4"><File size={20}/></div>
-                             <div>
-                                <p className="font-bold text-gray-800 text-sm">{res.title}</p>
-                                <p className="text-xs text-gray-500">{res.course} • {res.type}</p>
-                             </div>
-                          </div>
-                          <button className="text-gray-400 hover:text-blue-600"><Download size={18}/></button>
-                       </div>
-                    ))}
-                 </div>
+                <h3 className="text-lg font-bold text-gray-700 mb-4 flex items-center">
+                  <BookOpen size={20} className="mr-2 text-blue-500" /> Case
+                  Studies & Resources
+                </h3>
+                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                  {resourcesData.map((res, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-4 border-b border-gray-100 last:border-0 hover:bg-gray-50"
+                    >
+                      <div className="flex items-center">
+                        <div className="bg-blue-50 p-2 rounded text-blue-600 mr-4">
+                          <File size={20} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-800 text-sm">
+                            {res.title}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {res.course} • {res.type}
+                          </p>
+                        </div>
+                      </div>
+                      <button className="text-gray-400 hover:text-blue-600">
+                        <Download size={18} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
           {/* REPORTS & GRIEVANCES VIEW */}
-          {activeTab === 'reports' && (
-             <div className="space-y-8">
-                {/* Student Grievances Section */}
-                <div>
-                   <h2 className="text-xl font-bold text-gray-700 mb-4">Student Grievance Log</h2>
-                   <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                      <table className="w-full text-left text-sm text-gray-600">
-                         <thead className="bg-gray-50 text-xs uppercase font-semibold text-gray-500">
-                            <tr>
-                               <th className="px-6 py-3">ID</th>
-                               <th className="px-6 py-3">Student</th>
-                               <th className="px-6 py-3">Issue</th>
-                               <th className="px-6 py-3">Date</th>
-                               <th className="px-6 py-3">Severity</th>
-                               <th className="px-6 py-3">Status</th>
-                               <th className="px-6 py-3">Action</th>
-                            </tr>
-                         </thead>
-                         <tbody className="divide-y divide-gray-100">
-                            {grievanceData.map((g) => (
-                               <tr key={g.id}>
-                                  <td className="px-6 py-3 font-medium">{g.id}</td>
-                                  <td className="px-6 py-3">{g.student}</td>
-                                  <td className="px-6 py-3 text-gray-800">{g.issue}</td>
-                                  <td className="px-6 py-3 text-gray-400">{g.date}</td>
-                                  <td className="px-6 py-3">
-                                     <span className={`px-2 py-1 rounded text-xs font-bold ${
-                                        g.severity === 'High' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'
-                                     }`}>{g.severity}</span>
-                                  </td>
-                                  <td className="px-6 py-3">
-                                     <span className={`px-2 py-1 rounded text-xs font-bold ${
-                                        g.status === 'Open' ? 'bg-red-50 text-red-600 border border-red-200' : 
-                                        g.status === 'Resolved' ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
-                                     }`}>{g.status}</span>
-                                  </td>
-                                  <td className="px-6 py-3"><button className="text-blue-600 hover:underline">Resolve</button></td>
-                               </tr>
-                            ))}
-                         </tbody>
-                      </table>
-                   </div>
+          {activeTab === "reports" && (
+            <div className="space-y-8">
+              {/* Student Grievances Section */}
+              <div>
+                <h2 className="text-xl font-bold text-gray-700 mb-4">
+                  Student Grievance Log
+                </h2>
+                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                  <table className="w-full text-left text-sm text-gray-600">
+                    <thead className="bg-gray-50 text-xs uppercase font-semibold text-gray-500">
+                      <tr>
+                        <th className="px-6 py-3">ID</th>
+                        <th className="px-6 py-3">Student</th>
+                        <th className="px-6 py-3">Issue</th>
+                        <th className="px-6 py-3">Date</th>
+                        <th className="px-6 py-3">Severity</th>
+                        <th className="px-6 py-3">Status</th>
+                        <th className="px-6 py-3">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {grievanceData.map((g) => (
+                        <tr key={g.id}>
+                          <td className="px-6 py-3 font-medium">{g.id}</td>
+                          <td className="px-6 py-3">{g.student}</td>
+                          <td className="px-6 py-3 text-gray-800">{g.issue}</td>
+                          <td className="px-6 py-3 text-gray-400">{g.date}</td>
+                          <td className="px-6 py-3">
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-bold ${
+                                g.severity === "High"
+                                  ? "bg-red-100 text-red-700"
+                                  : "bg-gray-100 text-gray-600"
+                              }`}
+                            >
+                              {g.severity}
+                            </span>
+                          </td>
+                          <td className="px-6 py-3">
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-bold ${
+                                g.status === "Open"
+                                  ? "bg-red-50 text-red-600 border border-red-200"
+                                  : g.status === "Resolved"
+                                    ? "bg-green-50 text-green-600 border border-green-200"
+                                    : "bg-yellow-50 text-yellow-600 border border-yellow-200"
+                              }`}
+                            >
+                              {g.status}
+                            </span>
+                          </td>
+                          <td className="px-6 py-3">
+                            <button className="text-blue-600 hover:underline">
+                              Resolve
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+              </div>
 
-                {/* Faculty Performance Section */}
-                <div>
-                   <h2 className="text-xl font-bold text-gray-700 mb-4">Faculty Performance Reports</h2>
-                   <div className="grid grid-cols-1 gap-4">
-                       {facultyData.map((prof) => (
-                           <div key={prof.id} className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex items-center justify-between">
-                               <div className="flex items-center">
-                                   <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg mr-4">
-                                       {prof.name.charAt(0)}
-                                   </div>
-                                   <div>
-                                       <h4 className="font-bold text-gray-800">{prof.name}</h4>
-                                       <p className="text-sm text-gray-500">{prof.dept}</p>
-                                   </div>
-                               </div>
-                               <div className="grid grid-cols-3 gap-8 text-center">
-                                   <div>
-                                       <p className="text-xs text-gray-400 uppercase">Student Rating</p>
-                                       <p className="font-bold text-lg text-gray-800">★ {prof.satisfaction}</p>
-                                   </div>
-                                   <div>
-                                       <p className="text-xs text-gray-400 uppercase">Engagement</p>
-                                       <span className={`px-2 py-1 rounded text-xs font-bold ${prof.engagement === 'High' || prof.engagement === 'Very High' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                                           {prof.engagement}
-                                       </span>
-                                   </div>
-                                   <div>
-                                       <p className="text-xs text-gray-400 uppercase">Avg Outcome</p>
-                                       <p className="font-bold text-lg text-blue-600">{prof.avgScore}%</p>
-                                   </div>
-                               </div>
-                               <button className="text-gray-400 hover:text-gray-600">
-                                   <ChevronDown size={20} />
-                               </button>
-                           </div>
-                       ))}
-                   </div>
+              {/* Faculty Performance Section */}
+              <div>
+                <h2 className="text-xl font-bold text-gray-700 mb-4">
+                  Faculty Performance Reports
+                </h2>
+                <div className="grid grid-cols-1 gap-4">
+                  {facultyData.map((prof) => (
+                    <div
+                      key={prof.id}
+                      className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex items-center justify-between"
+                    >
+                      <div className="flex items-center">
+                        <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg mr-4">
+                          {prof.name.charAt(0)}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800">
+                            {prof.name}
+                          </h4>
+                          <p className="text-sm text-gray-500">{prof.dept}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-8 text-center">
+                        <div>
+                          <p className="text-xs text-gray-400 uppercase">
+                            Student Rating
+                          </p>
+                          <p className="font-bold text-lg text-gray-800">
+                            ★ {prof.satisfaction}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400 uppercase">
+                            Engagement
+                          </p>
+                          <span
+                            className={`px-2 py-1 rounded text-xs font-bold ${prof.engagement === "High" || prof.engagement === "Very High" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
+                          >
+                            {prof.engagement}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400 uppercase">
+                            Avg Outcome
+                          </p>
+                          <p className="font-bold text-lg text-blue-600">
+                            {prof.avgScore}%
+                          </p>
+                        </div>
+                      </div>
+                      <button className="text-gray-400 hover:text-gray-600">
+                        <ChevronDown size={20} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-             </div>
+              </div>
+            </div>
           )}
 
           {/* ANALYTICS VIEW */}
-          {activeTab === 'analytics' && (
-              <div className="space-y-6">
-                  <div className="bg-indigo-900 text-white p-6 rounded-lg shadow-lg">
-                      <h2 className="text-xl font-bold flex items-center mb-2"><TrendingUp className="mr-2"/> Impact Analysis</h2>
-                      <p className="text-indigo-200">Showing how increased video engagement correlates with higher final assessment scores.</p>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                          <h3 className="font-bold text-gray-700 mb-4">Engagement vs. Learning Outcomes</h3>
-                          <div className="h-64">
-                              <ResponsiveContainer width="100%" height="100%">
-                                  <AreaChart data={correlationData}>
-                                    <defs>
-                                        <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                                            <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-                                        </linearGradient>
-                                        <linearGradient id="colorWatch" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-                                            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
-                                        </linearGradient>
-                                    </defs>
-                                    <XAxis dataKey="week" />
-                                    <YAxis />
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Area type="monotone" dataKey="videoWatchTime" stroke="#82ca9d" fillOpacity={1} fill="url(#colorWatch)" name="Avg Watch Time (mins)" />
-                                    <Area type="monotone" dataKey="avgScore" stroke="#8884d8" fillOpacity={1} fill="url(#colorScore)" name="Avg Assessment Score" />
-                                  </AreaChart>
-                              </ResponsiveContainer>
-                          </div>
-                          <p className="text-sm text-gray-500 mt-4 italic">
-                              Analysis: Students who watched &gt;60 mins of content per week (W4-W6) achieved 15% higher assessment scores.
-                          </p>
-                      </div>
-
-                      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                          <h3 className="font-bold text-gray-700 mb-4">Retention Funnel</h3>
-                          <div className="space-y-4">
-                              {[
-                                  { stage: 'Enrolled', count: 216, pct: 100, color: 'bg-blue-500' },
-                                  { stage: 'Active in Week 1', count: 210, pct: 97, color: 'bg-blue-400' },
-                                  { stage: 'Submitted Assignment 1', count: 195, pct: 90, color: 'bg-blue-300' },
-                                  { stage: 'Mid-Term Qualified', count: 180, pct: 83, color: 'bg-emerald-500' },
-                                  { stage: 'Final Certification', count: 165, pct: 76, color: 'bg-emerald-600' }
-                              ].map((item, i) => (
-                                  <div key={i}>
-                                      <div className="flex justify-between text-sm mb-1">
-                                          <span className="font-medium text-gray-700">{item.stage}</span>
-                                          <span className="text-gray-500">{item.count} Learners ({item.pct}%)</span>
-                                      </div>
-                                      <div className="w-full bg-gray-100 rounded-full h-3">
-                                          <div className={`h-3 rounded-full ${item.color}`} style={{ width: `${item.pct}%` }}></div>
-                                      </div>
-                                  </div>
-                              ))}
-                          </div>
-                      </div>
-                  </div>
+          {activeTab === "analytics" && (
+            <div className="space-y-6">
+              <div className="bg-indigo-900 text-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-xl font-bold flex items-center mb-2">
+                  <TrendingUp className="mr-2" /> Impact Analysis
+                </h2>
+                <p className="text-indigo-200">
+                  Showing how increased video engagement correlates with higher
+                  final assessment scores.
+                </p>
               </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                  <h3 className="font-bold text-gray-700 mb-4">
+                    Engagement vs. Learning Outcomes
+                  </h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={correlationData}>
+                        <defs>
+                          <linearGradient
+                            id="colorScore"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#8884d8"
+                              stopOpacity={0.8}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#8884d8"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                          <linearGradient
+                            id="colorWatch"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#82ca9d"
+                              stopOpacity={0.8}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#82ca9d"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <XAxis dataKey="week" />
+                        <YAxis />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <Tooltip />
+                        <Legend />
+                        <Area
+                          type="monotone"
+                          dataKey="videoWatchTime"
+                          stroke="#82ca9d"
+                          fillOpacity={1}
+                          fill="url(#colorWatch)"
+                          name="Avg Watch Time (mins)"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="avgScore"
+                          stroke="#8884d8"
+                          fillOpacity={1}
+                          fill="url(#colorScore)"
+                          name="Avg Assessment Score"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-4 italic">
+                    Analysis: Students who watched &gt;60 mins of content per
+                    week (W4-W6) achieved 15% higher assessment scores.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                  <h3 className="font-bold text-gray-700 mb-4">
+                    Retention Funnel
+                  </h3>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        stage: "Enrolled",
+                        count: 216,
+                        pct: 100,
+                        color: "bg-blue-500",
+                      },
+                      {
+                        stage: "Active in Week 1",
+                        count: 210,
+                        pct: 97,
+                        color: "bg-blue-400",
+                      },
+                      {
+                        stage: "Submitted Assignment 1",
+                        count: 195,
+                        pct: 90,
+                        color: "bg-blue-300",
+                      },
+                      {
+                        stage: "Mid-Term Qualified",
+                        count: 180,
+                        pct: 83,
+                        color: "bg-emerald-500",
+                      },
+                      {
+                        stage: "Final Certification",
+                        count: 165,
+                        pct: 76,
+                        color: "bg-emerald-600",
+                      },
+                    ].map((item, i) => (
+                      <div key={i}>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="font-medium text-gray-700">
+                            {item.stage}
+                          </span>
+                          <span className="text-gray-500">
+                            {item.count} Learners ({item.pct}%)
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-3">
+                          <div
+                            className={`h-3 rounded-full ${item.color}`}
+                            style={{ width: `${item.pct}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* CALENDAR VIEW */}
-          {activeTab === 'calendar' && (
+          {activeTab === "calendar" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-700">Class Schedule & Timetable</h2>
+                <h2 className="text-xl font-bold text-gray-700">
+                  Class Schedule & Timetable
+                </h2>
                 <div className="flex space-x-2">
-                  <button className="px-3 py-1 bg-white border border-gray-300 rounded text-sm text-gray-600 shadow-sm">Download PDF</button>
-                  <button className="px-3 py-1 bg-emerald-500 text-white rounded text-sm shadow-sm hover:bg-emerald-600">Sync to Calendar</button>
+                  <button className="px-3 py-1 bg-white border border-gray-300 rounded text-sm text-gray-600 shadow-sm">
+                    Download PDF
+                  </button>
+                  <button className="px-3 py-1 bg-emerald-500 text-white rounded text-sm shadow-sm hover:bg-emerald-600">
+                    Sync to Calendar
+                  </button>
                 </div>
               </div>
 
@@ -1050,19 +1815,27 @@ export default function VeridiumMIS() {
                 {/* Main Timetable Grid */}
                 <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                   <div className="grid grid-cols-6 border-b border-gray-200">
-                    <div className="p-4 text-center text-xs font-bold text-gray-400 bg-gray-50 border-r border-gray-100">Time</div>
+                    <div className="p-4 text-center text-xs font-bold text-gray-400 bg-gray-50 border-r border-gray-100">
+                      Time
+                    </div>
                     {timetableData.days.map((day, i) => (
-                      <div key={i} className="p-4 text-center text-sm font-bold text-gray-700 border-r border-gray-100 last:border-0">
+                      <div
+                        key={i}
+                        className="p-4 text-center text-sm font-bold text-gray-700 border-r border-gray-100 last:border-0"
+                      >
                         {day}
                       </div>
                     ))}
                   </div>
-                  
+
                   <div className="grid grid-cols-6">
                     {/* Time Column */}
                     <div className="bg-gray-50 border-r border-gray-100">
                       {timetableData.times.map((time, i) => (
-                        <div key={i} className="h-24 border-b border-gray-100 text-xs text-gray-500 flex items-center justify-center">
+                        <div
+                          key={i}
+                          className="h-24 border-b border-gray-100 text-xs text-gray-500 flex items-center justify-center"
+                        >
                           {time}
                         </div>
                       ))}
@@ -1070,37 +1843,52 @@ export default function VeridiumMIS() {
 
                     {/* Days Columns */}
                     {timetableData.days.map((day, dayIndex) => (
-                      <div key={dayIndex} className="relative border-r border-gray-100 last:border-0">
+                      <div
+                        key={dayIndex}
+                        className="relative border-r border-gray-100 last:border-0"
+                      >
                         {/* Grid Lines */}
                         {timetableData.times.map((_, i) => (
-                          <div key={i} className="h-24 border-b border-gray-50"></div>
+                          <div
+                            key={i}
+                            className="h-24 border-b border-gray-50"
+                          ></div>
                         ))}
-                        
+
                         {/* Events */}
                         {timetableData.events
-                          .filter(e => e.day === day)
+                          .filter((e) => e.day === day)
                           .map((event, i) => {
                             // Simple positioning logic based on start time index
-                            const startIndex = timetableData.times.findIndex(t => t === event.start);
+                            const startIndex = timetableData.times.findIndex(
+                              (t) => t === event.start,
+                            );
                             if (startIndex === -1) return null;
                             const top = startIndex * 6; // 6rem (h-24)
-                            const height = event.duration * 6; 
-                            
+                            const height = event.duration * 6;
+
                             return (
-                              <div 
-                                key={i} 
+                              <div
+                                key={i}
                                 className={`absolute w-[95%] left-[2.5%] rounded-lg p-2 text-xs border shadow-sm cursor-pointer hover:brightness-95 transition-all z-10 ${event.color}`}
-                                style={{ top: `${top}rem`, height: `${height}rem` }}
+                                style={{
+                                  top: `${top}rem`,
+                                  height: `${height}rem`,
+                                }}
                               >
-                                <div className="font-bold truncate">{event.title}</div>
-                                <div className="opacity-75 truncate">{event.type} • {event.faculty}</div>
+                                <div className="font-bold truncate">
+                                  {event.title}
+                                </div>
+                                <div className="opacity-75 truncate">
+                                  {event.type} • {event.faculty}
+                                </div>
                                 <div className="mt-1 flex items-center opacity-75">
-                                  <Clock size={10} className="mr-1"/> {event.start}
+                                  <Clock size={10} className="mr-1" />{" "}
+                                  {event.start}
                                 </div>
                               </div>
                             );
-                          })
-                        }
+                          })}
                       </div>
                     ))}
                   </div>
@@ -1110,40 +1898,66 @@ export default function VeridiumMIS() {
                 <div className="w-72 space-y-6">
                   <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
                     <h3 className="font-bold text-gray-800 mb-4 flex items-center">
-                      <Clock size={18} className="mr-2 text-emerald-500"/> Upcoming Deadlines
+                      <Clock size={18} className="mr-2 text-emerald-500" />{" "}
+                      Upcoming Deadlines
                     </h3>
                     <div className="space-y-4">
                       {[
-                        { title: 'Macroeconomics Quiz', due: 'Tomorrow, 11:00 PM', type: 'Quiz' },
-                        { title: 'MIS Case Study', due: 'Sep 25, 11:59 PM', type: 'Assignment' },
-                        { title: 'Group Project Proposal', due: 'Sep 28, 05:00 PM', type: 'Project' },
+                        {
+                          title: "Macroeconomics Quiz",
+                          due: "Tomorrow, 11:00 PM",
+                          type: "Quiz",
+                        },
+                        {
+                          title: "MIS Case Study",
+                          due: "Sep 25, 11:59 PM",
+                          type: "Assignment",
+                        },
+                        {
+                          title: "Group Project Proposal",
+                          due: "Sep 28, 05:00 PM",
+                          type: "Project",
+                        },
                       ].map((item, i) => (
-                        <div key={i} className="flex items-start pb-3 border-b border-gray-100 last:border-0 last:pb-0">
-                          <div className={`w-2 h-2 mt-1.5 rounded-full mr-3 flex-shrink-0 ${item.type === 'Quiz' ? 'bg-red-500' : item.type === 'Assignment' ? 'bg-blue-500' : 'bg-purple-500'}`}></div>
+                        <div
+                          key={i}
+                          className="flex items-start pb-3 border-b border-gray-100 last:border-0 last:pb-0"
+                        >
+                          <div
+                            className={`w-2 h-2 mt-1.5 rounded-full mr-3 flex-shrink-0 ${item.type === "Quiz" ? "bg-red-500" : item.type === "Assignment" ? "bg-blue-500" : "bg-purple-500"}`}
+                          ></div>
                           <div>
-                            <p className="text-sm font-medium text-gray-800 leading-tight">{item.title}</p>
-                            <p className="text-xs text-gray-500 mt-1">{item.due}</p>
+                            <p className="text-sm font-medium text-gray-800 leading-tight">
+                              {item.title}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {item.due}
+                            </p>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="bg-indigo-900 text-white p-5 rounded-xl shadow-lg">
-                     <p className="text-xs font-bold uppercase opacity-70 mb-2">Live Now</p>
-                     <h3 className="text-lg font-bold mb-1">Macroeconomics</h3>
-                     <p className="text-sm opacity-90 mb-4">Prof. Jagdish Prasad • Lecture 4</p>
-                     <button className="w-full bg-white text-indigo-900 font-bold text-sm py-2 rounded-lg hover:bg-indigo-50 transition-colors">
-                       Join Class
-                     </button>
+                    <p className="text-xs font-bold uppercase opacity-70 mb-2">
+                      Live Now
+                    </p>
+                    <h3 className="text-lg font-bold mb-1">Macroeconomics</h3>
+                    <p className="text-sm opacity-90 mb-4">
+                      Prof. Jagdish Prasad • Lecture 4
+                    </p>
+                    <button className="w-full bg-white text-indigo-900 font-bold text-sm py-2 rounded-lg hover:bg-indigo-50 transition-colors">
+                      Join Class
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>
   );
 }
+
